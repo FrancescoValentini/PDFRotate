@@ -9,10 +9,19 @@
 
 ## Installation
 
+#### 1) Clone and change directory
 ```bash
-1) git clone https://github.com/FrancescoValentini/PDFRotate && cd PDFRotate
-2) pip install -r requirements.txt
-3) python PDFRotate.py -h
+git clone https://github.com/FrancescoValentini/PDFRotate && cd PDFRotate
+```
+
+#### 2) Install Requirements
+```bash
+pip install -r requirements.txt
+```
+
+#### 3) Execute
+```bash
+python PDFRotate.py -h
 ```
 
 ## Examples
