@@ -1,13 +1,19 @@
 import argparse
 import fitz  # PyMuPDF
 
-def rotate(inputFile, outputFile, angle=90):
+
+def rotate(inputFile, outputFile, angle=90, compress=False):
     """
-    Rotates all pages of a PDF file by a specified angle and saves the rotated version to a new file.
+    Rotates all pages of a PDF file by a specified angle and optionally compresses the resulting PDF.
 
     :param inputFile: Path to the input PDF file that needs to be rotated.
-    :param outputFile: Path where the rotated PDF will be saved.
+    :type inputFile: str
+    :param outputFile: Path where the rotated (and optionally compressed) PDF will be saved.
+    :type outputFile: str
     :param angle: The angle by which to rotate the PDF pages. Must be 90, 180, or 270 degrees.
+    :type angle: int
+    :param compress: If True, the rotated PDF will be compressed before saving. Default is False.
+    :type compress: bool
     :return: None
     """
     doc = fitz.open(inputFile)
@@ -15,23 +21,13 @@ def rotate(inputFile, outputFile, angle=90):
     for page in doc:
         page.set_rotation(angle)
 
-    doc.save(outputFile)
+    if compress:
+        doc.save(outputFile, garbage=4, deflate=True, clean=True)
+    else:
+        doc.save(outputFile)
     doc.close()
 
 
-def compress(inputFile, outputFile):
-    """
-    Compresses a PDF file
-
-    :param inputFile: Path to the input PDF file that needs to be compressed.
-    :param outputFile: Path where the compressed PDF will be saved.
-    :return: None
-    """
-    doc = fitz.open(inputFile)
-
-    # Save compressed file
-    doc.save(outputFile, garbage=4, deflate=True, clean=True)
-    doc.close()
 
 def main():
     parser = argparse.ArgumentParser()
