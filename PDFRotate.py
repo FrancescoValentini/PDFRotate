@@ -1,6 +1,8 @@
 import argparse
 import fitz  # PyMuPDF
 import os
+import time
+from datetime import timedelta
 
 def rotate(inputFile, outputFile, angle=90, compress=False):
     """
@@ -50,13 +52,17 @@ def processFolder(inputFolder, outputFolder, angle=90, compress=False):
     for filename in os.listdir(inputFolder):
         if filename.endswith(".pdf"):
             inputFilePath = os.path.join(inputFolder, filename)
+            print(f"[INFO] Processing: {inputFilePath}")
             outputFilePath = os.path.join(outputFolder, filename)
             rotate(inputFilePath, outputFilePath, angle, compress)
 
 def isFolder(path):
     return os.path.isdir(path)
 
+
 def main():
+    start_time = time.time()
+
     parser = argparse.ArgumentParser(
         description="Rotate and optionally compress a PDF file or all PDFs in a folder.\n\nAuthor: Francesco Valentini",
         epilog="Examples:\n"
@@ -88,11 +94,15 @@ def main():
     )
     args = parser.parse_args()
 
-    if not (isFolder(args.inputFile) or isFolder(args.outputFile)):
-        rotate(args.inputFile, args.outputFile, args.degrees, args.compress)
+    if not (isFolder(args.inputPath) or isFolder(args.outputPath)):
+        print(f"\n[INFO] Processing: {args.inputPath}...")
+        rotate(args.inputPath, args.outputPath, args.degrees, args.compress)
     else:
-        processFolder(args.inputFile, args.outputFile, args.degrees, args.compress)
+        processFolder(args.inputPath, args.outputPath, args.degrees, args.compress)
 
+    elapsed_time = time.time() - start_time
+    elapsed_time_formatted = str(timedelta(seconds=int(elapsed_time)))
+    print(f"\n[INFO] Operation completed in: {elapsed_time_formatted}.")
 
 
 if __name__ == "__main__":
