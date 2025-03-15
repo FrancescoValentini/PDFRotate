@@ -1,5 +1,5 @@
 import argparse
-import fitz  # PyMuPDF
+import pymupdf
 import os
 import time
 from datetime import timedelta
@@ -18,7 +18,7 @@ def rotate(inputFile, outputFile, angle=90, compress=False):
     :type compress: bool
     :return: None
     """
-    doc = fitz.open(inputFile)
+    doc = pymupdf.open(inputFile)
 
     for page in doc:
         page.set_rotation(angle)
